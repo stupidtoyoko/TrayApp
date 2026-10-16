@@ -54,3 +54,4 @@ EXE будет находиться в `out/build/Release/TrayApp.exe`.
 ## CI
 
 GitHub Actions запускает CMake на `windows-latest`, собирает `Release` и прикрепляет `TrayApp.exe` как artifact.
+Updated
