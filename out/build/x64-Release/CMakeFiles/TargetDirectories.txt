@@ -1,0 +1,3 @@
+C:/Users/Никита/Downloads/TrayApp-main/out/build/x64-Release/CMakeFiles/TrayApp.dir
+C:/Users/Никита/Downloads/TrayApp-main/out/build/x64-Release/CMakeFiles/edit_cache.dir
+C:/Users/Никита/Downloads/TrayApp-main/out/build/x64-Release/CMakeFiles/rebuild_cache.dir
