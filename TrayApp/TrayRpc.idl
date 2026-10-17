@@ -1,0 +1,8 @@
+[
+    uuid(7B3D2E41-6F95-4A82-9D11-8C4A61F0B237),
+    version(1.0)
+]
+interface TrayRpc
+{
+    error_status_t RequestServiceStop(void);
+}
