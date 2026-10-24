@@ -1,67 +1,26 @@
-
-name: Build TrayApp and TrayService
+name: Windows CMake Build
 
 on:
   push:
-    branches:
-      - main
-      - feature/system-tray
-      - feature/service-rpc-alpc
   pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v2
+      - name: Configure CMake
+        run: cmake -S . -B out/build -A x64
 
-      - name: Verify Visual C++ toolset
-        shell: pwsh
-        run: |
-          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          $vs = & $vswhere -latest -products '*' -property installationPath
-          if (-not $vs) {
-            throw "Visual Studio installation was not found."
-          }
-          $toolset = Join-Path $vs "VC\Tools\MSVC"
-          $found = Get-ChildItem $toolset -Directory -ErrorAction SilentlyContinue |
-            Where-Object { $_.Name -like "14.5*" }
-          if (-not $found) {
-            throw "MSVC v145 toolset was not found on this runner."
-          }
+      - name: Build Release
+        run: cmake --build out/build --config Release
 
-      - name: Build TrayApp
-        run: >
-          msbuild TrayApp/TrayApp.vcxproj
-          /m
-          /p:Configuration=Release
-          /p:Platform=x64
-          /p:RestorePackages=false
-          /verbosity:minimal
-
-      - name: Build TrayService
-        run: >
-          msbuild TrayService/TrayService.vcxproj
-          /m
-          /p:Configuration=Release
-          /p:Platform=x64
-          /p:RestorePackages=false
-          /verbosity:minimal
-
-      - name: Upload executables
+      - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TrayApp-and-TrayService-windows-x64
-          path: |
-            TrayApp/x64/Release/TrayApp.exe
-            TrayService/x64/Release/TrayService.exe
+          name: TrayApp-windows-x64
+          path: out/build/Release/TrayApp.exe
           if-no-files-found: error
-          retention-days: 14
