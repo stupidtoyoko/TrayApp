@@ -1,0 +1,32 @@
+[
+    uuid(7B3D2E41-6F95-4A82-9D11-8C4A61F0B237),
+    version(1.0)
+]
+interface TrayRpc
+{
+    error_status_t RequestServiceStop(void);
+
+    error_status_t GetAuthState(
+        [out] long* authenticated,
+        [out, string] wchar_t** username);
+
+    error_status_t Login(
+        [in, string] wchar_t* username,
+        [in, string] wchar_t* password,
+        [out] long* success,
+        [out, string] wchar_t** message,
+        [out, string] wchar_t** authenticatedUsername);
+
+    error_status_t Logout(void);
+
+    error_status_t GetLicenseState(
+        [out] long* hasLicense,
+        [out, string] wchar_t** expiryDate,
+        [out, string] wchar_t** message);
+
+    error_status_t ActivateProduct(
+        [in, string] wchar_t* activationCode,
+        [out] long* success,
+        [out, string] wchar_t** expiryDate,
+        [out, string] wchar_t** message);
+}
